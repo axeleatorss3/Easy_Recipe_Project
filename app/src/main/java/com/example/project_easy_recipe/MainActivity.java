@@ -106,40 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Search View
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search Recipes");
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.wtf("", "hoal");
-                listaRecetasAdapter.removeList();
-            }
-        });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // SearchString(query);
-                Log.wtf("query", "" + query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //listaRecetasAdapter.getFilter().filter(newText);
-
-                return false;
-            }
 
 
-        });
-        return super.onCreateOptionsMenu(menu);
 
-    }
-
-    public void search(View view) {
-    }
 }
