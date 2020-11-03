@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
 import com.example.project_easy_recipe.Fragments.HomeFragment;
@@ -40,13 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG ="receta";
     private RecyclerView recyclerView;
     private ListaRecetasAdapter listaRecetasAdapter;
-    private Button buttonpasta, buttonsoup;
     private ArrayList<Recipe> listReci;
     private FrameLayout frameLayout;
     private BottomNavigationView bottomNavigationView;
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
-
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.search: setFrag(searchFragment);
                         return true;
-
                 }
                 return false;
             }
@@ -78,35 +76,24 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frm_layout, frag);
         fragmentTransaction.commit();
-
-    }
-    //OBTENCION DE DATOS DE LA API
-    private void obtenerdatos(String receta){
-        SpoontacularApiService service = retrofit.create(SpoontacularApiService.class);
-        Call<SpoontacularRespuesta> spoontacularRespuestaCall= service.obtenerReceta("ce5dc91a6b264334bfbb5bb20ba93b3c",receta);
-        spoontacularRespuestaCall.enqueue(new Callback<SpoontacularRespuesta>() {
-
-            @Override
-            public void onResponse(Call<SpoontacularRespuesta> call, Response<SpoontacularRespuesta> response) {
-                if(response.isSuccessful()){
-                    SpoontacularRespuesta spoontacularRespuesta = response.body();
-                    ArrayList<Recipe> listRecipe = spoontacularRespuesta.getResults();
-                    listaRecetasAdapter.adicionarListaRecetas(listRecipe);
-
-                }else{
-                    Log.e(TAG,"onResponse: "+response.errorBody());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SpoontacularRespuesta> call, Throwable t) {
-                Log.e(TAG,"on failure: "+ t.getMessage());
-            }
-        });
     }
 
-    //Search View
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if(fragment.getClass() == HomeFragment.class){
+            homeFragment = (HomeFragment) fragment;
+        }
+        else if(fragment.getClass() == SearchFragment.class){
+            searchFragment = (SearchFragment) fragment;
+        }
+    }
+    public void onMessageFromFragToMain(String sender, String param){
+        if(sender.equals("lista")){
+            searchFragment.onMessageFromMaintoFrag(param);
+
+        }
 
 
-
+    }
 }

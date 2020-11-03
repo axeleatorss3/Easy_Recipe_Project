@@ -1,8 +1,10 @@
 package com.example.project_easy_recipe.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
+import com.example.project_easy_recipe.MainActivity;
 import com.example.project_easy_recipe.R;
 import com.example.project_easy_recipe.models.Recipe;
 import com.example.project_easy_recipe.models.SpoontacularRespuesta;
@@ -48,7 +51,9 @@ public class SearchFragment extends Fragment {
     private String mParam2;
     private Retrofit retrofit;
     RecyclerView recyclerView;
+    MainActivity mainActivity;
     ArrayList<Recipe> list;
+    private static String recipe = "";
     private static final String TAG ="receta";
     private ListaRecetasAdapter listaRecetasAdapter;
     public SearchFragment() {
@@ -74,12 +79,19 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mainActivity = (MainActivity)getActivity();
         setHasOptionsMenu(true);
     }
 
@@ -98,8 +110,14 @@ public class SearchFragment extends Fragment {
                 .baseUrl("https://api.spoonacular.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        obtenerdatos("apple");
+
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        obtenerdatos(recipe);
     }
 
     @Override
@@ -135,7 +153,13 @@ public class SearchFragment extends Fragment {
         });
 
     }
+    public  void onMessageFromMaintoFrag(String param){
+        recipe = param;
+        Log.wtf("message",""+recipe);
 
+
+
+    }
     public void obtenerdatos(String receta){
         SpoontacularApiService service = retrofit.create(SpoontacularApiService.class);
         Call<SpoontacularRespuesta> spoontacularRespuestaCall= service.obtenerReceta("ce5dc91a6b264334bfbb5bb20ba93b3c",receta);
