@@ -18,6 +18,5 @@
     <item
         android:id="@+id/setings"
         android:icon="@drawable/chief_button"
-        android:title="my chief"
-        />
+        android:title="my chef" />
 </menu>

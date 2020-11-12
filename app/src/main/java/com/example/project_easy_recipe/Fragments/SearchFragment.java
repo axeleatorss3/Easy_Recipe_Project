@@ -5,8 +5,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
 import com.example.project_easy_recipe.MainActivity;
@@ -40,6 +44,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
+    private TextView ID;
+    private DetalleFragment detalleFragment;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,7 +104,9 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search,container,false);
+
+
+        final View view = inflater.inflate(R.layout.fragment_search,container,false);
         list = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
         listaRecetasAdapter = new ListaRecetasAdapter(getContext());
@@ -110,6 +118,15 @@ public class SearchFragment extends Fragment {
                 .baseUrl("https://api.spoonacular.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        listaRecetasAdapter.setOnItemClickListener(new ListaRecetasAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.wtf("onitme","ci"+position);
+                listaRecetasAdapter.getId(position);
+
+            }
+        });
+
 
         return view;
     }
@@ -169,8 +186,8 @@ public class SearchFragment extends Fragment {
             public void onResponse(Call<SpoontacularRespuesta> call, Response<SpoontacularRespuesta> response) {
                 if(response.isSuccessful()){
                     SpoontacularRespuesta spoontacularRespuesta = response.body();
-                    ArrayList<Recipe> listRecipe = spoontacularRespuesta.getResults();
-                    listaRecetasAdapter.adicionarListaRecetas(listRecipe);
+                    ArrayList<Recipe> list = spoontacularRespuesta.getResults();
+                    listaRecetasAdapter.adicionarListaRecetas(list);
 
                 }else{
                     Log.e(TAG,"onResponse: "+response.errorBody());

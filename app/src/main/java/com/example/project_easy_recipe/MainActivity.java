@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
+import com.example.project_easy_recipe.Fragments.DetalleFragment;
 import com.example.project_easy_recipe.Fragments.HomeFragment;
 import com.example.project_easy_recipe.Fragments.SearchFragment;
 import com.example.project_easy_recipe.models.Recipe;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
+    private DetalleFragment detalleFragment;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(fragment.getClass() == SearchFragment.class){
             searchFragment = (SearchFragment) fragment;
+        }else if(fragment.getClass() == DetalleFragment.class){
+            detalleFragment = (DetalleFragment) fragment;
         }
     }
     public void onMessageFromFragToMain(String sender, String param){
@@ -94,6 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
     }
+
 }

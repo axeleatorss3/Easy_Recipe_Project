@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lytDetalle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.DetalleFragment">
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Titulo" />
+
+    <TextView
+        android:id="@+id/txtTiempo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tiempo" />
+
+    <TextView
+        android:id="@+id/txtPorciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Porciones" />
+</LinearLayout>

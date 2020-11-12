@@ -11,10 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.project_easy_recipe.Fragments.DetalleFragment;
+import com.example.project_easy_recipe.MainActivity;
 import com.example.project_easy_recipe.R;
 import com.example.project_easy_recipe.models.Recipe;
 
@@ -28,6 +33,8 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
     private ArrayList<Recipe> datasetAll;
     private onItemClickListener mlistener;
     private Context context;
+    private DetalleFragment detalleFragment;
+    MainActivity mainActivity;
     public interface  onItemClickListener{
         void onItemClick(int position);
 
@@ -108,28 +115,52 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
         }
     };
 
+    public void getId(int position){
+        Recipe r = dataset.get(position);
+        int id = r.getId();
+        Log.wtf("getId","Id: "+id);
+        DetalleFragment detalleFragment = new DetalleFragment();
+        detalleFragment.setId(String.valueOf(id));
+
+
+    }
 
     public static class ViewHolders extends RecyclerView.ViewHolder {
         private ImageView fotoImageView;
         private TextView nombreTextView;
         private TextView ID;
+
+
         public ViewHolders(@NonNull View itemView, final onItemClickListener listener) {
             super(itemView);
             ID = itemView.findViewById(R.id.recetaID);
             fotoImageView = itemView.findViewById(R.id.fotoImageView);
             nombreTextView = itemView.findViewById(R.id.nombreTxtView);
             itemView.setOnClickListener(new View.OnClickListener() {
+               
+
                 @Override
                 public void onClick(View v) {
                     if(listener != null){
                         int position = getAdapterPosition();
+
+
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
-                            Log.wtf("d","click");
+
                         }
                     }
+                    AppCompatActivity activity = (AppCompatActivity)v.getContext();
+                    DetalleFragment detalleFragment = new DetalleFragment();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frm_layout,detalleFragment).addToBackStack(null).commit();
+
+                    Log.d("LogClickViewHolder","Fondo clicked"+ID.getText());
+
                 }
             });
         }
     }
+
+
+
 }
