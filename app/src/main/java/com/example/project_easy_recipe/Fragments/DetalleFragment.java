@@ -4,16 +4,28 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.project_easy_recipe.Adapter.ListIngredientAdapter;
 import com.example.project_easy_recipe.R;
+import com.example.project_easy_recipe.models.IngredientResponse;
+import com.example.project_easy_recipe.models.Ingredients;
+import com.example.project_easy_recipe.models.Recipe;
 import com.example.project_easy_recipe.models.RecipeDetail;
+import com.example.project_easy_recipe.models.SpoontacularRespuesta;
 import com.example.project_easy_recipe.spoonApi.SpoontacularApiService;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +75,13 @@ public class DetalleFragment extends Fragment {
     TextView txtTitulo;
     TextView txtTiempo;
     TextView txtPorciones;
+    TextView txtDishTypes;
+    ImageView imgRecipe;
+    private RecyclerView recyclerIng;
+    private ListIngredientAdapter listIngredientAdapter;
+    private int offset;
+    private Retrofit retrofit;
+    ArrayList<Ingredients> list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,20 +108,31 @@ public class DetalleFragment extends Fragment {
         txtTitulo = view.findViewById(R.id.txtTitulo);
         txtTiempo = view.findViewById(R.id.txtTiempo);
         txtPorciones = view.findViewById(R.id.txtPorciones);
+        imgRecipe = view.findViewById(R.id.imgRecipe);
+        txtDishTypes = view.findViewById(R.id.txtDishTypes);
 
+        recyclerIng = view.findViewById(R.id.recyclerIng);
+        listIngredientAdapter = new ListIngredientAdapter(getContext());
+        recyclerIng.setAdapter(listIngredientAdapter);
+        recyclerIng.setHasFixedSize(true);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
+        recyclerIng.setLayoutManager(layoutManager);
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.spoonacular.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         return view;
 
     }
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
             find(newId);
+            find2(newId);
 
     }
 
 
     private void find(String codigo){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.spoonacular.com/")
-                .addConverterFactory(GsonConverterFactory.create()).build();
         SpoontacularApiService spoontacularApiService = retrofit.create(SpoontacularApiService.class);
         Call<RecipeDetail> call = spoontacularApiService.find(codigo);
         call.enqueue(new Callback<RecipeDetail>() {
@@ -114,8 +144,8 @@ public class DetalleFragment extends Fragment {
                         txtTitulo.setText(r.getTitle());
                         txtTiempo.setText(String.valueOf(r.getReadyInMinutes()));
                         txtPorciones.setText(String.valueOf(r.getServings()));
-
-
+                        Glide.with(getContext()).load(r.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imgRecipe);
+                    
                     }
                 }catch (Exception ex){
                     Log.e(TAG,"onResponse: "+response.errorBody());
@@ -127,6 +157,26 @@ public class DetalleFragment extends Fragment {
                 Log.e(TAG,"on failure: "+ t.getMessage());
             }
         });
+    }
+
+    private void find2(String codigo){
+        SpoontacularApiService spoontacularApiService = retrofit.create(SpoontacularApiService.class);
+        Call<IngredientResponse> ingredientResponseCall = spoontacularApiService.find2(codigo);
+        ingredientResponseCall.enqueue(new Callback<IngredientResponse>() {
+            @Override
+            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+                IngredientResponse ingredientResponse = response.body();
+                ArrayList<Ingredients> list = ingredientResponse.getExtendedIngredients();
+                listIngredientAdapter.adicionarIngredientes(list);
+            }
+
+            @Override
+            public void onFailure(Call<IngredientResponse> call, Throwable t) {
+                Log.e(TAG,"on failure: "+ t.getMessage());
+            }
+        });
+
+
     }
 
 

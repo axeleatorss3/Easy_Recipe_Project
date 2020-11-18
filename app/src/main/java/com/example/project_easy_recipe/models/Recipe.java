@@ -1,10 +1,13 @@
 package com.example.project_easy_recipe.models;
 
+import java.util.ArrayList;
+
 public class Recipe {
     private int id;
     private String title;
     private String image;
     private String imageType;
+
 
     public int getId() {
         return id;
@@ -37,4 +40,6 @@ public class Recipe {
     public void setImageType(String imageType) {
         this.imageType = imageType;
     }
+
+
 }
