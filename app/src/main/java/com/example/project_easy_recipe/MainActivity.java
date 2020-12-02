@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,8 +20,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
+import com.example.project_easy_recipe.Database.RecipeDB;
 import com.example.project_easy_recipe.Fragments.DetalleFragment;
 import com.example.project_easy_recipe.Fragments.HomeFragment;
+import com.example.project_easy_recipe.Fragments.MyRecipesFragment;
 import com.example.project_easy_recipe.Fragments.SearchFragment;
 import com.example.project_easy_recipe.models.Recipe;
 import com.example.project_easy_recipe.models.SpoontacularRespuesta;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private DetalleFragment detalleFragment;
+    private MyRecipesFragment myRecipesFragment;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +59,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         homeFragment = new HomeFragment();
         searchFragment = new SearchFragment();
+        myRecipesFragment = new MyRecipesFragment();
         bottomNavigationView = findViewById(R.id.bottom_navi);
         frameLayout = findViewById(R.id.frm_layout);
         setFrag(homeFragment);
+        final RecipeDB developerBD=new RecipeDB(getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -66,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.search: setFrag(searchFragment);
                         return true;
+                    case R.id.profile: setFrag(myRecipesFragment);
+                        return true;
+
                 }
                 return false;
             }

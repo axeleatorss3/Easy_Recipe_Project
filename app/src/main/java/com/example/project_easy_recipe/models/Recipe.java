@@ -7,7 +7,12 @@ public class Recipe {
     private String title;
     private String image;
     private String imageType;
+    public Recipe(int id, String image, String title){
+        this.id = id;
+        this.image = image;
+        this.title = title;
 
+    }
 
     public int getId() {
         return id;

@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.project_easy_recipe.Adapter.ListIngredientAdapter;
+import com.example.project_easy_recipe.Database.RecipeDB;
 import com.example.project_easy_recipe.R;
 import com.example.project_easy_recipe.models.IngredientResponse;
 import com.example.project_easy_recipe.models.Ingredients;
@@ -76,11 +78,15 @@ public class DetalleFragment extends Fragment {
     TextView txtTiempo;
     TextView txtPorciones;
     TextView txtDishTypes;
+    static String imagen;
+    static String nombre;
+
     ImageView imgRecipe;
     private RecyclerView recyclerIng;
     private ListIngredientAdapter listIngredientAdapter;
     private int offset;
     private Retrofit retrofit;
+    Button btnGuardar;
     ArrayList<Ingredients> list;
 
     @Override
@@ -96,21 +102,29 @@ public class DetalleFragment extends Fragment {
         newId = id;
         Log.wtf("Id","Id es:"+id);
 
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_detalle, container, false);
-
+        final RecipeDB recipeDB=new RecipeDB(getContext());
         txtTitulo = view.findViewById(R.id.txtTitulo);
         txtTiempo = view.findViewById(R.id.txtTiempo);
         txtPorciones = view.findViewById(R.id.txtPorciones);
         imgRecipe = view.findViewById(R.id.imgRecipe);
         txtDishTypes = view.findViewById(R.id.txtDishTypes);
+        btnGuardar = view.findViewById(R.id.btnGuardar);
 
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recipeDB.agregarDatos(imagen,nombre,Integer.parseInt(newId));
+                Log.wtf("","dfadfa");
+            }
+        });
         recyclerIng = view.findViewById(R.id.recyclerIng);
         listIngredientAdapter = new ListIngredientAdapter(getContext());
         recyclerIng.setAdapter(listIngredientAdapter);
@@ -122,6 +136,7 @@ public class DetalleFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return view;
+
 
     }
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -145,7 +160,8 @@ public class DetalleFragment extends Fragment {
                         txtTiempo.setText(String.valueOf(r.getReadyInMinutes()));
                         txtPorciones.setText(String.valueOf(r.getServings()));
                         Glide.with(getContext()).load(r.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imgRecipe);
-                    
+                        imagen = r.getImage();
+                        nombre = r.getTitle();
                     }
                 }catch (Exception ex){
                     Log.e(TAG,"onResponse: "+response.errorBody());

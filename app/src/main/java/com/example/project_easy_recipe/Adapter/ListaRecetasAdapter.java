@@ -121,8 +121,6 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
         Log.wtf("getId","Id: "+id);
         DetalleFragment detalleFragment = new DetalleFragment();
         detalleFragment.setId(String.valueOf(id));
-
-
     }
 
     public static class ViewHolders extends RecyclerView.ViewHolder {

@@ -1,14 +1,25 @@
 package com.example.project_easy_recipe.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
+import com.example.project_easy_recipe.Adapter.MyRecipeAdapter;
+import com.example.project_easy_recipe.Database.RecipeDB;
+import com.example.project_easy_recipe.MainActivity;
 import com.example.project_easy_recipe.R;
+import com.example.project_easy_recipe.models.Recipe;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +33,11 @@ public class MyRecipesFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    RecyclerView recyclerView;
+    MyRecipeAdapter myRecipeAdapter;
+    MainActivity mainActivity;
+    ArrayList<Recipe> list;
+    public static Context context;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -55,12 +71,28 @@ public class MyRecipesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        context = getContext();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_recipes, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_recipes, container, false);
+        recyclerView = view.findViewById(R.id.recyclerMR);
+        RecipeDB recipeDB = new RecipeDB(getContext());
+        myRecipeAdapter = new MyRecipeAdapter(recipeDB.mostrarDatos());
+        recyclerView.setAdapter(myRecipeAdapter);
+        recyclerView.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),1);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        myRecipeAdapter.setOnItemClickListener(new ListaRecetasAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.wtf("onitme","ci"+position);
+                myRecipeAdapter.getId(position);
+            }
+        });
+        return view;
     }
 }
