@@ -12,11 +12,7 @@
         />
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/search"
+        android:icon="@drawable/ic_open_book"
         android:title="my recipes"
         />
-    <item
-        android:id="@+id/setings"
-        android:icon="@drawable/chief_button"
-        android:title="my chef" />
 </menu>
