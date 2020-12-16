@@ -51,4 +51,11 @@ public class RecipeDB extends SQLiteOpenHelper {
         }
         return listas;
     }
+    public void eliminarDatos(int id){
+        SQLiteDatabase bd=getWritableDatabase();
+        if (bd!=null){
+            bd.execSQL("DELETE FROM RECETAS WHERE ID='"+id+"'");
+            bd.close();
+        }
+    }
 }

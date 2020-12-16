@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lytSearch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00D82A2A"
+    android:orientation="vertical"
     tools:context=".Fragments.SearchFragment">
 
     <LinearLayout
@@ -14,10 +15,21 @@
         android:orientation="vertical"
         android:weightSum="1">
 
+        <TextView
+            android:id="@+id/txtTitulo3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#8BC34A"
+            android:text="Recipes"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".1" />
     </LinearLayout>
-</FrameLayout>
+</LinearLayout>

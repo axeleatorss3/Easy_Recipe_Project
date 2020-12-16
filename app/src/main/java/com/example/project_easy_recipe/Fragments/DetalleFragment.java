@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,9 +25,7 @@ import com.example.project_easy_recipe.Database.RecipeDB;
 import com.example.project_easy_recipe.R;
 import com.example.project_easy_recipe.models.IngredientResponse;
 import com.example.project_easy_recipe.models.Ingredients;
-import com.example.project_easy_recipe.models.Recipe;
 import com.example.project_easy_recipe.models.RecipeDetail;
-import com.example.project_easy_recipe.models.SpoontacularRespuesta;
 import com.example.project_easy_recipe.spoonApi.SpoontacularApiService;
 
 import java.util.ArrayList;
@@ -90,6 +89,7 @@ public class DetalleFragment extends Fragment {
     private Retrofit retrofit;
     Button btnGuardar;
     Button btnReceta;
+    Button btnEliminar;
     ArrayList<Ingredients> list;
 
     @Override
@@ -121,11 +121,12 @@ public class DetalleFragment extends Fragment {
         txtDishTypes = view.findViewById(R.id.txtDishTypes);
         btnGuardar = view.findViewById(R.id.btnGuardar);
         btnReceta = view.findViewById(R.id.btnReceta);
+        btnEliminar = view.findViewById(R.id.btnEliminar);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 recipeDB.agregarDatos(imagen,nombre,Integer.parseInt(newId));
-                Log.wtf("","dfadfa");
+                Toast.makeText(getContext(),"Se guardo la receta", Toast.LENGTH_LONG).show();
             }
         });
         btnReceta.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +135,13 @@ public class DetalleFragment extends Fragment {
                 Uri uri = Uri.parse(Url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+            }
+        });
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recipeDB.eliminarDatos(Integer.parseInt(newId));
+                Toast.makeText(getContext(),"Se elimino la receta", Toast.LENGTH_LONG).show();
             }
         });
         recyclerIng = view.findViewById(R.id.recyclerIng);
