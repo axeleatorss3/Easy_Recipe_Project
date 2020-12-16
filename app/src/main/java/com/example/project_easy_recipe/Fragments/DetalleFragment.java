@@ -1,5 +1,7 @@
 package com.example.project_easy_recipe.Fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -80,13 +82,14 @@ public class DetalleFragment extends Fragment {
     TextView txtDishTypes;
     static String imagen;
     static String nombre;
-
+    public static String Url;
     ImageView imgRecipe;
     private RecyclerView recyclerIng;
     private ListIngredientAdapter listIngredientAdapter;
     private int offset;
     private Retrofit retrofit;
     Button btnGuardar;
+    Button btnReceta;
     ArrayList<Ingredients> list;
 
     @Override
@@ -117,12 +120,20 @@ public class DetalleFragment extends Fragment {
         imgRecipe = view.findViewById(R.id.imgRecipe);
         txtDishTypes = view.findViewById(R.id.txtDishTypes);
         btnGuardar = view.findViewById(R.id.btnGuardar);
-
+        btnReceta = view.findViewById(R.id.btnReceta);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 recipeDB.agregarDatos(imagen,nombre,Integer.parseInt(newId));
                 Log.wtf("","dfadfa");
+            }
+        });
+        btnReceta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(Url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
         recyclerIng = view.findViewById(R.id.recyclerIng);
@@ -162,6 +173,7 @@ public class DetalleFragment extends Fragment {
                         Glide.with(getContext()).load(r.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imgRecipe);
                         imagen = r.getImage();
                         nombre = r.getTitle();
+                        Url = r.getSourceUrl();
                     }
                 }catch (Exception ex){
                     Log.e(TAG,"onResponse: "+response.errorBody());

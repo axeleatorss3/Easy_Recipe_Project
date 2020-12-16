@@ -12,8 +12,15 @@ public class RecipeDetail {
     private int readyInMinutes;
     private String image;
     private String imageType;
+    private String sourceUrl;
 
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
 
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
 
     public int getId() {
         return id;
