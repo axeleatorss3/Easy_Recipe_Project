@@ -28,18 +28,20 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
     private Context context;
     private DetalleFragment detalleFragment;
     private ListaRecetasAdapter.onItemClickListener mlistener;
-    public interface  onItemClickListener{
+
+    public interface onItemClickListener {
         void onItemClick(int position);
 
     }
 
-    public void  setOnItemClickListener(ListaRecetasAdapter.onItemClickListener listener){
+    public void setOnItemClickListener(ListaRecetasAdapter.onItemClickListener listener) {
         mlistener = listener;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_receta,parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_receta, parent, false);
         ViewHolder viewHolder = new ViewHolder(view, mlistener);
         return viewHolder;
     }
@@ -48,9 +50,10 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.title.setText(listaItems.get(position).getTitle());
 
-       Glide.with(MyRecipesFragment.context).load(listaItems.get(position).getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        Glide.with(MyRecipesFragment.context).load(listaItems.get(position).getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
     }
-    public MyRecipeAdapter(Context c){
+
+    public MyRecipeAdapter(Context c) {
         this.context = c;
         dataset = new ArrayList<>();
         datasetAll = dataset;
@@ -62,10 +65,10 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
         return listaItems.size();
     }
 
-    public void getId(int position){
+    public void getId(int position) {
 
         int id = listaItems.get(position).getId();
-        Log.wtf("getId2","Id2: "+id);
+        Log.wtf("getId2", "Id2: " + id);
         DetalleFragment detalleFragment = new DetalleFragment();
         detalleFragment.setId(String.valueOf(id));
 
@@ -75,6 +78,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title, id;
         private ImageView imageView;
+
         public ViewHolder(@NonNull View itemView, final ListaRecetasAdapter.onItemClickListener listener) {
             super(itemView);
             title = itemView.findViewById(R.id.nombreTxtView);
@@ -83,23 +87,25 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(listener != null){
+                    if (listener != null) {
                         int position = getAdapterPosition();
 
 
-                        if(position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
 
                         }
                     }
-                    AppCompatActivity activity = (AppCompatActivity)view.getContext();
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     DetalleFragment detalleFragment = new DetalleFragment();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frm_layout,detalleFragment).addToBackStack(null).commit();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frm_layout, detalleFragment).addToBackStack(null).commit();
                 }
             });
         }
     }
+
     public List<Recipe> listaItems;
+
     public MyRecipeAdapter(List<Recipe> listaItems) {
         this.listaItems = listaItems;
     }

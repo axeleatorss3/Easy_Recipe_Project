@@ -60,8 +60,9 @@ public class SearchFragment extends Fragment {
     MainActivity mainActivity;
     ArrayList<Recipe> list;
     private static String recipe = "";
-    private static final String TAG ="receta";
+    private static final String TAG = "receta";
     private ListaRecetasAdapter listaRecetasAdapter;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -97,7 +98,7 @@ public class SearchFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        mainActivity = (MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
         setHasOptionsMenu(true);
     }
 
@@ -106,13 +107,13 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        final View view = inflater.inflate(R.layout.fragment_search,container,false);
+        final View view = inflater.inflate(R.layout.fragment_search, container, false);
         list = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
         listaRecetasAdapter = new ListaRecetasAdapter(getContext());
         recyclerView.setAdapter(listaRecetasAdapter);
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager  gridLayoutManager = new GridLayoutManager(getContext(),2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.spoonacular.com/")
@@ -121,7 +122,7 @@ public class SearchFragment extends Fragment {
         listaRecetasAdapter.setOnItemClickListener(new ListaRecetasAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.wtf("onitme","ci"+position);
+                Log.wtf("onitme", "ci" + position);
                 listaRecetasAdapter.getId(position);
 
             }
@@ -140,7 +141,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu,menu);
+        inflater.inflate(R.menu.menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Search Recipes");
@@ -170,39 +171,38 @@ public class SearchFragment extends Fragment {
         });
 
     }
-    public  void onMessageFromMaintoFrag(String param){
-        recipe = param;
-        Log.wtf("message",""+recipe);
 
+    public void onMessageFromMaintoFrag(String param) {
+        recipe = param;
+        Log.wtf("message", "" + recipe);
 
 
     }
-    public void obtenerdatos(String receta){
+
+    public void obtenerdatos(String receta) {
         SpoontacularApiService service = retrofit.create(SpoontacularApiService.class);
-        Call<SpoontacularRespuesta> spoontacularRespuestaCall= service.obtenerReceta("ce5dc91a6b264334bfbb5bb20ba93b3c",receta);
+        Call<SpoontacularRespuesta> spoontacularRespuestaCall = service.obtenerReceta("ce5dc91a6b264334bfbb5bb20ba93b3c", receta);
         spoontacularRespuestaCall.enqueue(new Callback<SpoontacularRespuesta>() {
 
             @Override
             public void onResponse(Call<SpoontacularRespuesta> call, Response<SpoontacularRespuesta> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     SpoontacularRespuesta spoontacularRespuesta = response.body();
                     ArrayList<Recipe> list = spoontacularRespuesta.getResults();
                     listaRecetasAdapter.adicionarListaRecetas(list);
 
-                }else{
-                    Log.e(TAG,"onResponse: "+response.errorBody());
+                } else {
+                    Log.e(TAG, "onResponse: " + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(Call<SpoontacularRespuesta> call, Throwable t) {
-                Log.e(TAG,"on failure: "+ t.getMessage());
+                Log.e(TAG, "on failure: " + t.getMessage());
             }
         });
 
     }
-
-
 
 
 }

@@ -101,9 +101,10 @@ public class DetalleFragment extends Fragment {
         }
 
     }
-    public void setId(String id){
+
+    public void setId(String id) {
         newId = id;
-        Log.wtf("Id","Id es:"+id);
+        Log.wtf("Id", "Id es:" + id);
 
     }
 
@@ -112,21 +113,21 @@ public class DetalleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view = inflater.inflate(R.layout.fragment_detalle, container, false);
-        final RecipeDB recipeDB=new RecipeDB(getContext());
+        View view = inflater.inflate(R.layout.fragment_detalle, container, false);
+        final RecipeDB recipeDB = new RecipeDB(getContext());
         txtTitulo = view.findViewById(R.id.txtTitulo);
         txtTiempo = view.findViewById(R.id.txtTiempo);
         txtPorciones = view.findViewById(R.id.txtPorciones);
         imgRecipe = view.findViewById(R.id.imgRecipe);
-        txtDishTypes = view.findViewById(R.id.txtDishTypes);
+        //txtDishTypes = view.findViewById(R.id.txtDishTypes);
         btnGuardar = view.findViewById(R.id.btnGuardar);
         btnReceta = view.findViewById(R.id.btnReceta);
         btnEliminar = view.findViewById(R.id.btnEliminar);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recipeDB.agregarDatos(imagen,nombre,Integer.parseInt(newId));
-                Toast.makeText(getContext(),"Se guardo la receta", Toast.LENGTH_LONG).show();
+                recipeDB.agregarDatos(imagen, nombre, Integer.parseInt(newId));
+                Toast.makeText(getContext(), "Se guardo la receta", Toast.LENGTH_LONG).show();
             }
         });
         btnReceta.setOnClickListener(new View.OnClickListener() {
@@ -141,14 +142,14 @@ public class DetalleFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 recipeDB.eliminarDatos(Integer.parseInt(newId));
-                Toast.makeText(getContext(),"Se elimino la receta", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Se elimino la receta", Toast.LENGTH_LONG).show();
             }
         });
         recyclerIng = view.findViewById(R.id.recyclerIng);
         listIngredientAdapter = new ListIngredientAdapter(getContext());
         recyclerIng.setAdapter(listIngredientAdapter);
         recyclerIng.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         recyclerIng.setLayoutManager(layoutManager);
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.spoonacular.com/")
@@ -158,22 +159,23 @@ public class DetalleFragment extends Fragment {
 
 
     }
+
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-            find(newId);
-            find2(newId);
+        find(newId);
+        find2(newId);
 
     }
 
 
-    private void find(String codigo){
+    private void find(String codigo) {
         SpoontacularApiService spoontacularApiService = retrofit.create(SpoontacularApiService.class);
         Call<RecipeDetail> call = spoontacularApiService.find(codigo);
         call.enqueue(new Callback<RecipeDetail>() {
             @Override
             public void onResponse(Call<RecipeDetail> call, Response<RecipeDetail> response) {
-                try{
-                    if(response.isSuccessful()){
+                try {
+                    if (response.isSuccessful()) {
                         RecipeDetail r = response.body();
                         txtTitulo.setText(r.getTitle());
                         txtTiempo.setText(String.valueOf(r.getReadyInMinutes()));
@@ -183,19 +185,19 @@ public class DetalleFragment extends Fragment {
                         nombre = r.getTitle();
                         Url = r.getSourceUrl();
                     }
-                }catch (Exception ex){
-                    Log.e(TAG,"onResponse: "+response.errorBody());
+                } catch (Exception ex) {
+                    Log.e(TAG, "onResponse: " + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeDetail> call, Throwable t) {
-                Log.e(TAG,"on failure: "+ t.getMessage());
+                Log.e(TAG, "on failure: " + t.getMessage());
             }
         });
     }
 
-    private void find2(String codigo){
+    private void find2(String codigo) {
         SpoontacularApiService spoontacularApiService = retrofit.create(SpoontacularApiService.class);
         Call<IngredientResponse> ingredientResponseCall = spoontacularApiService.find2(codigo);
         ingredientResponseCall.enqueue(new Callback<IngredientResponse>() {
@@ -208,13 +210,12 @@ public class DetalleFragment extends Fragment {
 
             @Override
             public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                Log.e(TAG,"on failure: "+ t.getMessage());
+                Log.e(TAG, "on failure: " + t.getMessage());
             }
         });
 
 
     }
-
 
 
 }

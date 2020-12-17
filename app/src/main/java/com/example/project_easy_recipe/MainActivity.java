@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.example.project_easy_recipe.Adapter.ListaRecetasAdapter;
@@ -26,10 +27,10 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_URL = "imageURL";
-    public static final String EXTRA_TITLE= "titleURL";
-    public static final String EXTRA_ID= "numId";
+    public static final String EXTRA_TITLE = "titleURL";
+    public static final String EXTRA_ID = "numId";
     private Retrofit retrofit;
-    private static final String TAG ="receta";
+    private static final String TAG = "receta";
     private RecyclerView recyclerView;
     private ListaRecetasAdapter listaRecetasAdapter;
     private ArrayList<Recipe> listReci;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private DetalleFragment detalleFragment;
     private MyRecipesFragment myRecipesFragment;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,16 +52,19 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navi);
         frameLayout = findViewById(R.id.frm_layout);
         setFrag(homeFragment);
-        final RecipeDB developerBD=new RecipeDB(getApplicationContext());
+        final RecipeDB developerBD = new RecipeDB(getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.home: setFrag(homeFragment);
+                switch (menuItem.getItemId()) {
+                    case R.id.home:
+                        setFrag(homeFragment);
                         return true;
-                    case R.id.search: setFrag(searchFragment);
+                    case R.id.search:
+                        setFrag(searchFragment);
                         return true;
-                    case R.id.profile: setFrag(myRecipesFragment);
+                    case R.id.profile:
+                        setFrag(myRecipesFragment);
                         return true;
 
 
@@ -67,11 +72,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-       /* recyclerView = findViewById(R.id.recyclerView);
-        buildRecylcerView();
-        listReci = new ArrayList<>();*/
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
     }
-    private void setFrag(Fragment frag){
+
+    private void setFrag(Fragment frag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frm_layout, frag);
         fragmentTransaction.commit();
@@ -80,17 +86,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
         super.onAttachFragment(fragment);
-        if(fragment.getClass() == HomeFragment.class){
+        if (fragment.getClass() == HomeFragment.class) {
             homeFragment = (HomeFragment) fragment;
-        }
-        else if(fragment.getClass() == SearchFragment.class){
+        } else if (fragment.getClass() == SearchFragment.class) {
             searchFragment = (SearchFragment) fragment;
-        }else if(fragment.getClass() == DetalleFragment.class){
+        } else if (fragment.getClass() == DetalleFragment.class) {
             detalleFragment = (DetalleFragment) fragment;
         }
     }
-    public void onMessageFromFragToMain(String sender, String param){
-        if(sender.equals("lista")){
+
+    public void onMessageFromFragToMain(String sender, String param) {
+        if (sender.equals("lista")) {
             searchFragment.onMessageFromMaintoFrag(param);
 
         }

@@ -35,18 +35,18 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
     private Context context;
     private DetalleFragment detalleFragment;
     MainActivity mainActivity;
-    public interface  onItemClickListener{
+
+    public interface onItemClickListener {
         void onItemClick(int position);
 
     }
 
-    public void  setOnItemClickListener(onItemClickListener listener){
+    public void setOnItemClickListener(onItemClickListener listener) {
         mlistener = listener;
     }
 
 
-
-    public ListaRecetasAdapter(Context c){
+    public ListaRecetasAdapter(Context c) {
         this.context = c;
         dataset = new ArrayList<>();
         datasetAll = dataset;
@@ -55,8 +55,8 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
     @NonNull
     @Override
     public ViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_receta,parent,false);
-        ViewHolders evh = new ViewHolders(view,mlistener);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_receta, parent, false);
+        ViewHolders evh = new ViewHolders(view, mlistener);
         return evh;
     }
 
@@ -64,7 +64,7 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
     @Override
     public void onBindViewHolder(@NonNull com.example.project_easy_recipe.Adapter.ListaRecetasAdapter.ViewHolders holder, int position) {
 
-        Recipe  r = dataset.get(position);
+        Recipe r = dataset.get(position);
         holder.nombreTextView.setText(r.getTitle());
         holder.ID.setText(String.valueOf(r.getId()));
         Glide.with(context).load(r.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.fotoImageView);
@@ -80,23 +80,26 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
         dataset.addAll(listRecipe);
         notifyDataSetChanged();
     }
-    public void removeList(){
+
+    public void removeList() {
         dataset.clear();
 
     }
+
     @Override
     public Filter getFilter() {
         return filter;
     }
+
     Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<Recipe> filteredList = new ArrayList<>();
-            if(constraint.toString().isEmpty()){
+            if (constraint.toString().isEmpty()) {
                 filteredList.addAll(datasetAll);
-            }else{
-                for(Recipe recipe : dataset){
-                    if(recipe.getTitle().contains(constraint.toString().toLowerCase())){
+            } else {
+                for (Recipe recipe : dataset) {
+                    if (recipe.getTitle().contains(constraint.toString().toLowerCase())) {
                         filteredList.add(recipe);
                     }
                 }
@@ -115,10 +118,10 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
         }
     };
 
-    public void getId(int position){
+    public void getId(int position) {
         Recipe r = dataset.get(position);
         int id = r.getId();
-        Log.wtf("getId","Id: "+id);
+        Log.wtf("getId", "Id: " + id);
         DetalleFragment detalleFragment = new DetalleFragment();
         detalleFragment.setId(String.valueOf(id));
     }
@@ -135,30 +138,29 @@ public class ListaRecetasAdapter extends RecyclerView.Adapter<com.example.projec
             fotoImageView = itemView.findViewById(R.id.fotoImageView);
             nombreTextView = itemView.findViewById(R.id.nombreTxtView);
             itemView.setOnClickListener(new View.OnClickListener() {
-               
+
 
                 @Override
                 public void onClick(View v) {
-                    if(listener != null){
+                    if (listener != null) {
                         int position = getAdapterPosition();
 
 
-                        if(position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
 
                         }
                     }
-                    AppCompatActivity activity = (AppCompatActivity)v.getContext();
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     DetalleFragment detalleFragment = new DetalleFragment();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frm_layout,detalleFragment).addToBackStack(null).commit();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frm_layout, detalleFragment).addToBackStack(null).commit();
 
-                    Log.d("LogClickViewHolder","Fondo clicked"+ID.getText());
+                    Log.d("LogClickViewHolder", "Fondo clicked" + ID.getText());
 
                 }
             });
         }
     }
-
 
 
 }

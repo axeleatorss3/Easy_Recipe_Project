@@ -84,12 +84,12 @@ public class MyRecipesFragment extends Fragment {
         myRecipeAdapter = new MyRecipeAdapter(recipeDB.mostrarDatos());
         recyclerView.setAdapter(myRecipeAdapter);
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         myRecipeAdapter.setOnItemClickListener(new ListaRecetasAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.wtf("onitme","ci"+position);
+                Log.wtf("onitme", "ci" + position);
                 myRecipeAdapter.getId(position);
             }
         });

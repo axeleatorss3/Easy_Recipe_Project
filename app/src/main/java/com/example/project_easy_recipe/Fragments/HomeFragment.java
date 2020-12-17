@@ -20,7 +20,6 @@ import com.example.project_easy_recipe.MainActivity;
 import com.example.project_easy_recipe.R;
 
 /**
-
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -29,14 +28,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String recipeType;
     private SearchFragment searchFragment;
     MainActivity mainActivity;
-    public HomeFragment(){
+
+    public HomeFragment() {
 
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
 
     }
 
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home,container,false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         btnSalds = view.findViewById(R.id.btnSalad);
         btnBreakfast = view.findViewById(R.id.btnBreakFast);
         btnDessert = view.findViewById(R.id.btnDessert);
@@ -64,11 +64,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         btnRandom.setOnClickListener(this);
         return view;
     }
-    public void FragmentsTrans(String s){
+
+    public void FragmentsTrans(String s) {
         SearchFragment searchFragment = new SearchFragment();
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction  = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.frm_layout,searchFragment);
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.frm_layout, searchFragment);
         fragmentTransaction.commit();
         mainActivity.onMessageFromFragToMain("lista", s);
 
@@ -79,7 +80,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnSalad:
                 FragmentsTrans("salad");
                 break;

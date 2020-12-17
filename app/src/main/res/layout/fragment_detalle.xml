@@ -9,71 +9,73 @@
     android:background="#F8F2F2"
     android:backgroundTint="#FFFFFF"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".Fragments.DetalleFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#8BC34A"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgRecipe"
+            android:layout_width="245dp"
+            android:layout_height="152dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#FFFFFF"
+            tools:src="@tools:sample/avatars" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:background="#8BC34A"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtTitulo"
-                android:layout_width="match_parent"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#8BC34A"
+                android:layout_weight="1"
+                android:text="Time to prepare(mins):"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/imgRecipe"
-                android:layout_width="245dp"
-                android:layout_height="152dp"
-                android:layout_gravity="center"
-                android:backgroundTint="#FFFFFF"
-                tools:src="@tools:sample/avatars" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtTiempo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#8BC34A"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Time to prepare(mins):"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Servings:"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/txtTiempo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Servings:"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtPorciones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="18sp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txtPorciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp" />
         </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnGuardar"
@@ -97,33 +99,23 @@
         android:layout_height="wrap_content"
         android:text="Ver receta completa" />
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="40px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="#8BC34A"
-        android:orientation="horizontal">
+        android:padding="10dp"
+        android:text="Ingredients:"
+        android:textColor="#000000"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ingredients:"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/txtDishTypes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:textSize="18sp" />
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerIng"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="10dp" />
 
 </LinearLayout>

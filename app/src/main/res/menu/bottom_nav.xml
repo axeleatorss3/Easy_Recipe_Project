@@ -12,7 +12,8 @@
         />
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/ic_open_book"
+        android:icon="@drawable/ic_chef"
         android:title="my recipes"
         />
+
 </menu>

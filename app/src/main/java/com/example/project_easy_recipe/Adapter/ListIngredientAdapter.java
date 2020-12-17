@@ -14,18 +14,19 @@ import com.example.project_easy_recipe.models.Ingredients;
 
 import java.util.ArrayList;
 
-public class ListIngredientAdapter extends RecyclerView.Adapter<ListIngredientAdapter.ViewHolder>{
+public class ListIngredientAdapter extends RecyclerView.Adapter<ListIngredientAdapter.ViewHolder> {
     private ArrayList<Ingredients> dataset;
     private Context context;
 
-    public ListIngredientAdapter(Context context){
+    public ListIngredientAdapter(Context context) {
         this.context = context;
         dataset = new ArrayList<>();
     }
+
     @NonNull
     @Override
     public ListIngredientAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,12 +41,14 @@ public class ListIngredientAdapter extends RecyclerView.Adapter<ListIngredientAd
         return dataset.size();
     }
 
-    public void adicionarIngredientes(ArrayList<Ingredients> listaIngredientes){
+    public void adicionarIngredientes(ArrayList<Ingredients> listaIngredientes) {
         dataset.addAll(listaIngredientes);
         notifyDataSetChanged();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtIngredient;
+
         public ViewHolder(View itemView) {
             super(itemView);
             txtIngredient = itemView.findViewById(R.id.txtIngredient);
